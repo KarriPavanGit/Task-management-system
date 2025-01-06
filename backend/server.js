@@ -1,29 +1,36 @@
-const mongoose=require("mongoose")
-const cors=require("cors")
-const express=require("express")
-const dotenv=require('dotenv')
+const mongoose = require("mongoose");
+const cors = require('cors');
+const express = require("express");
+const dotenv = require('dotenv');
+const secretKey = process.env.JWT_SECRET_KEY;
 
 dotenv.config();
 
-const app=express()
-app.use(express.json())
-app.use(cors())
+const app = express();
+app.use(express.json());
+app.use(cors()); // Using cors correctly
 
-mongoose.connect(process.env.MONGODB_URI,{useNewUrlParser: true,useUnifiedTopology: true})
-        .then(()=>{
-            console.log("Connect to DB successfully")
-        })
-        .catch((err)=>{
-            console.log(err.message)
-        });
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Connected to DB successfully");
+  })
+  .catch((err) => {
+    console.log("Error connecting to DB:", err.message);
+  });
 
-const adminroutes=require("./routes/AdminRoutes")
-app.use("",adminroutes)
+// Importing Routes
+const adminRoutes = require("./routes/AdminRoutes");
+const userRoutes = require("./routes/UserRoutes");
+const authRoutes = require("./routes/AdminRoutes")
 
+// Setting up routes
+app.use("/admin", adminRoutes); 
+app.use("/users", userRoutes);
+app.use("",authRoutes);
 
-
-const PORT=process.env.PORT || 5000;
-app.listen(PORT,()=>{
-    console.log(`Server running on port ${PORT}`);
-})
-
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

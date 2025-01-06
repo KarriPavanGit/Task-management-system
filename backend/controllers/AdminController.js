@@ -25,7 +25,8 @@ const adminregister = async(request,response) =>{
         return response.status(400).send("Admin already exists");
        }
        const admin=new Admin({name,username,password});
-       
+        await admin.save();
+        return response.status(201).json(admin);
     }
     catch(err)
     {
@@ -33,4 +34,4 @@ const adminregister = async(request,response) =>{
     }
 }
 
-module.exports={checkadminlogin};
+module.exports={checkadminlogin,adminregister};
