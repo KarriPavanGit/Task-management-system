@@ -22,11 +22,13 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
 // Importing Routes
 const adminRoutes = require("./routes/AdminRoutes");
 const userRoutes = require("./routes/UserRoutes");
-const authRoutes = require("./routes/AdminRoutes")
+const taskRoutes = require("./routes/TaskRoutes");
+const authRoutes = require("./routes/IndexRoutes");
 
 // Setting up routes
 app.use("/admin", adminRoutes); 
 app.use("/users", userRoutes);
+app.use("/tasks", taskRoutes);
 app.use("",authRoutes);
 
 // Start server

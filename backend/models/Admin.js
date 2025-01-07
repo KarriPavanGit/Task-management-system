@@ -5,7 +5,7 @@ const AdminSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     fullname: { type: String },
-    phonenumber: { type: String },
+    phonenumber: { type: String, unique: true },
     createdAt: { type: Date, default: Date.now }
 })
 

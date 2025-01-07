@@ -1,37 +1,31 @@
 const Admin = require('../models/Admin')
 const User = require('../models/User')
+const bcrypt=require('bcrypt')
 
-const checkadminlogin = async(request,response) =>{
-    try{
-        const input=request.body;
-        console.log(input);
+const adminregister = async (request, response) => {
+  try {
+    const { fullname, username, email, password, phonenumber } = request.body;
 
-        const admin=await Admin.findOne(input);
-        if(!admin) {
-            return response.status(400).send("Admin Not Found");
-        }
-        return response.json(admin);
-        
-    }catch(err){
-        response.status(500).send(err.message);
+    const adminExists = await Admin.findOne({ 
+      $or: [{ username }, { email }, { phonenumber }] 
+    });
+
+    if (adminExists) {
+      let existingField = '';
+      if (adminExists.username === username) existingField = 'Username';
+      else if (adminExists.email === email) existingField = 'Email';
+      else existingField = 'Phone number';
+      
+      return response.status(400).json({ message: `${existingField} already exists` });
     }
-}
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const admin = new Admin({ fullname, username, email, password: hashedPassword, phonenumber });
+    
+    await admin.save();
+    return response.status(201).json({ message: "Registration successful", admin });
+  } catch (err) {
+    response.status(500).json({ message: err.message });
+  }
+};
 
-const adminregister = async(request,response) =>{
-    try{
-        const {name,username,password}=request.body;
-       const adminexists= await Admin.findOne({username});
-       if(adminexists) {
-        return response.status(400).send("Admin already exists");
-       }
-       const admin=new Admin({name,username,password});
-        await admin.save();
-        return response.status(201).json(admin);
-    }
-    catch(err)
-    {
-        response.status(500).send(err.message);
-    }
-}
-
-module.exports={checkadminlogin,adminregister};
+module.exports = { adminregister };
