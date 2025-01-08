@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import '../../styles/adduser.css';
 const AddUser = () => {
     const [formData, setFormData] = useState({
         username: '',
@@ -20,7 +20,7 @@ const AddUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/users/add', formData);
+            await axios.post('http://localhost:5000/users/add', formData);
             alert('User added successfully');
             setFormData({
                 username: '',
