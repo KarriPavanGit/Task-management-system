@@ -18,7 +18,7 @@ const UpdateUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put('http://localhost:5000/users/update', formData);
+            await axios.put('http://localhost:5000/users/update', formData);
             alert('User updated successfully');
             setFormData({ email: '', fullname: '', password: '' });
         } catch (error) {

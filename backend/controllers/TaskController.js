@@ -1,11 +1,17 @@
-const Task = require('../models/Task');
-const User = require('../models/User');
+const User=require('../models/User')
+const Task= require('../models/Task')
 
-// Add task
 const addTask = async (request, response) => {
     try {
-        const input = request.body;      
-        const task = new Task(input);
+        const input = request.body;
+        const userData = await User.findOne({ email: input.user });  // Find user by email
+        if (!userData) {
+            return response.status(404).json({ message: 'User not found' });
+        }
+        const task = new Task({
+            ...input,
+            user: userData._id  // Use ObjectId reference
+        });
         await task.save();
         return response.status(201).json(task);
     } catch (err) {
@@ -13,6 +19,8 @@ const addTask = async (request, response) => {
         return response.status(500).send(err.message);
     }
 };
+
+
 
 // Delete task
 const deleteTask = async (request, response) => {
@@ -60,22 +68,19 @@ const updateTask = async (request, response) => {
 };
 
 // View all tasks
-const viewAllTasks = async (request, response) => {
+const viewAllTasks = async (req, res) => {
     try {
-        const { email } = request.params;
-        const user = await User.findOne({ email });
-
+        const user = await User.findOne({ email: req.params.email });
         if (!user) {
-            return response.status(404).send("User not found");
+            return res.status(404).json({ message: 'User not found' });
         }
-
-        const allTasks = await Task.find({ user: user._id });
-
-        return response.status(200).json(allTasks);
+        const tasks = await Task.find({ user: user._id });  // Use ObjectId
+        return res.status(200).json(tasks);
     } catch (err) {
-        console.error("Error retrieving tasks:", err);
-        return response.status(500).send(err.message);
+        console.error('Error fetching tasks:', err);
+        res.status(500).send(err.message);
     }
 };
+
 
 module.exports = { addTask, deleteTask, updateTask, viewAllTasks };

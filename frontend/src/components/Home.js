@@ -1,70 +1,46 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaTasks, FaUserPlus, FaSignInAlt, FaInfoCircle } from 'react-icons/fa'; // FontAwesome icons
+import '../styles/home.css';
 
 function Home() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
+    <div className="home-container">
       <h1>Welcome to Task Management System</h1>
-      <p>Organize your tasks and take detailed notes efficiently.</p>
-      <div style={{ marginTop: '20px' }}>
-        <button 
-          onClick={() => navigate('/home')}
-          style={{
-            margin: '10px',
-            padding: '10px 20px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
-          }}
-        >
-          Home
-        </button>
-        <button 
-          onClick={() => navigate('/register')}
-          style={{
-            margin: '10px',
-            padding: '10px 20px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
-          }}
-        >
-          Register
-        </button>
-        <button 
-          onClick={() => navigate('/login')}
-          style={{
-            margin: '10px',
-            padding: '10px 20px',
-            backgroundColor: '#2196F3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
-          }}
-        >
-          Login
-        </button>
-        <button 
-          onClick={() => navigate('/about')}
-          style={{
-            margin: '10px',
-            padding: '10px 20px',
-            backgroundColor: '#FF5722',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
-          }}
-        >
-          About
-        </button>
+      <p className="intro-text">Organize your tasks and take detailed notes efficiently.</p>
+
+      {/* Icons Section */}
+      <div className="icon-container">
+        <div>
+          <FaTasks className="icon" />
+          <h2>Manage Tasks</h2>
+          <p>Stay on top of your tasks with ease.</p>
+        </div>
+        <div>
+          <FaUserPlus className="icon" />
+          <h2>Register</h2>
+          <p>Create your account and start managing tasks.</p>
+        </div>
+        <div>
+          <FaSignInAlt className="icon" />
+          <h2>Login</h2>
+          <p>Access your account and track your progress.</p>
+        </div>
+        <div>
+          <FaInfoCircle className="icon" />
+          <h2>About</h2>
+          <p>Learn more about our task management system.</p>
+        </div>
+      </div>
+
+      {/* Button Section */}
+      <div className="button-container">
+        <button className="home-btn" onClick={() => navigate('/home')}>Home</button>
+        <button className="register-btn" onClick={() => navigate('/register')}>Register</button>
+        <button className="login-btn" onClick={() => navigate('/login')}>Login</button>
+        <button className="about-btn" onClick={() => navigate('/about')}>About</button>
       </div>
     </div>
   );
